@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_authenticated/my-rentals")({
       { property: "og:description", content: "Requests, active rentals and history in one place." },
     ],
   }),
-  component: MyRentals;
+  component: MyRentals,
 });
 
 function MyRentals() {
