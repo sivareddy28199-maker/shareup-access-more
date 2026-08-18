@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as AuthenticatedListItemRouteImport } from './routes/_authenticated/list-item'
+import { Route as AuthenticatedMyRentalsRouteImport } from './routes/_authenticated/my-rentals'
 import { Route as AuthenticatedVerifyRouteImport } from './routes/_authenticated/verify'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
 
@@ -35,6 +37,16 @@ const ExploreRoute = ExploreRouteImport.update({
   path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedListItemRoute = AuthenticatedListItemRouteImport.update({
+  id: '/list-item',
+  path: '/list-item',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMyRentalsRoute = AuthenticatedMyRentalsRouteImport.update({
+  id: '/my-rentals',
+  path: '/my-rentals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedVerifyRoute = AuthenticatedVerifyRouteImport.update({
   id: '/verify',
   path: '/verify',
@@ -50,6 +62,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/list-item': typeof AuthenticatedListItemRoute
+  '/my-rentals': typeof AuthenticatedMyRentalsRoute
   '/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
 }
@@ -57,6 +71,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/list-item': typeof AuthenticatedListItemRoute
+  '/my-rentals': typeof AuthenticatedMyRentalsRoute
   '/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
 }
@@ -66,20 +82,38 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/_authenticated/list-item': typeof AuthenticatedListItemRoute
+  '/_authenticated/my-rentals': typeof AuthenticatedMyRentalsRoute
   '/_authenticated/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/explore' | '/verify' | '/item/$id'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/list-item'
+    | '/my-rentals'
+    | '/verify'
+    | '/item/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/explore' | '/verify' | '/item/$id'
+  to:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/list-item'
+    | '/my-rentals'
+    | '/verify'
+    | '/item/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/explore'
+    | '/_authenticated/list-item'
+    | '/_authenticated/my-rentals'
     | '/_authenticated/verify'
     | '/item/$id'
   fileRoutesById: FileRoutesById
@@ -122,6 +156,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExploreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/list-item': {
+      id: '/_authenticated/list-item'
+      path: '/list-item'
+      fullPath: '/list-item'
+      preLoaderRoute: typeof AuthenticatedListItemRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-rentals': {
+      id: '/_authenticated/my-rentals'
+      path: '/my-rentals'
+      fullPath: '/my-rentals'
+      preLoaderRoute: typeof AuthenticatedMyRentalsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/verify': {
       id: '/_authenticated/verify'
       path: '/verify'
@@ -140,10 +188,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedListItemRoute: typeof AuthenticatedListItemRoute
+  AuthenticatedMyRentalsRoute: typeof AuthenticatedMyRentalsRoute
   AuthenticatedVerifyRoute: typeof AuthenticatedVerifyRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedListItemRoute: AuthenticatedListItemRoute,
+  AuthenticatedMyRentalsRoute: AuthenticatedMyRentalsRoute,
   AuthenticatedVerifyRoute: AuthenticatedVerifyRoute,
 }
 

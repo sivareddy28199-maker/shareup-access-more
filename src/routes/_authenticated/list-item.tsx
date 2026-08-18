@@ -50,9 +50,18 @@ function ListItem() {
     const price = Number(form.get("price_per_day"));
     const deposit = Number(form.get("deposit"));
 
-    if (title.length < 4) return toast.error("Give your listing a clearer title");
-    if (!categoryId) return toast.error("Pick a category");
-    if (!price || price <= 0) return toast.error("Enter a valid price per day");
+    if (title.length < 4) {
+      toast.error("Give your listing a clearer title");
+      return;
+    }
+    if (!categoryId) {
+      toast.error("Pick a category");
+      return;
+    }
+    if (!price || price <= 0) {
+      toast.error("Enter a valid price per day");
+      return;
+    }
 
     setSaving(true);
     try {
