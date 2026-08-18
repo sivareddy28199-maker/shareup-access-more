@@ -382,20 +382,20 @@ export async function cancelRequest(id: string) {
 
 /** Demo-only payment: records a simulated payment and starts the rental. */
 export async function payDemoAndStartRental(request: RentalRequest, method: string) {
-  const rental = unwrap(
-    await supabase
-      .from("rentals")
-      .insert({
-        request_id: request.id,
-        listing_id: request.listing_id,
-        renter_id: request.renter_id,
-        owner_id: request.owner_id,
-        start_date: request.start_date,
-        end_date: request.end_date,
-      })
-      .select("*")
-      .single(),
-  );
+  const created = await supabase
+    .from("rentals")
+    .insert({
+      request_id: request.id,
+      listing_id: request.listing_id,
+      renter_id: request.renter_id,
+      owner_id: request.owner_id,
+      start_date: request.start_date,
+      end_date: request.end_date,
+    })
+    .select("*")
+    .single();
+  if (created.error) throw new Error(created.error.message);
+  const rental = created.data;
   const { error } = await supabase.from("demo_payments").insert({
     rental_id: rental.id,
     request_id: request.id,
