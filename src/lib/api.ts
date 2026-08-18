@@ -342,24 +342,23 @@ export async function createRentalRequest(input: {
 }) {
   // owner_id / pricing / days are recalculated and validated server-side by a
   // database trigger, so client values here are only placeholders.
-  const row = unwrap(
-    await supabase
-      .from("rental_requests")
-      .insert({
-        listing_id: input.listing_id,
-        renter_id: input.renter_id,
-        owner_id: input.renter_id,
-        start_date: input.start_date,
-        end_date: input.end_date,
-        days: 1,
-        price_per_day: 0,
-        total_amount: 0,
-        message: input.message ?? null,
-      })
-      .select("*")
-      .single(),
-  );
-  return row;
+  const created = await supabase
+    .from("rental_requests")
+    .insert({
+      listing_id: input.listing_id,
+      renter_id: input.renter_id,
+      owner_id: input.renter_id,
+      start_date: input.start_date,
+      end_date: input.end_date,
+      days: 1,
+      price_per_day: 0,
+      total_amount: 0,
+      message: input.message ?? null,
+    })
+    .select("*")
+    .single();
+  if (created.error) throw new Error(created.error.message);
+  return created.data as RentalRequest;
 }
 
 export async function respondToRequest(id: string, decision: "approved" | "rejected") {
