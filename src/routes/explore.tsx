@@ -50,7 +50,7 @@ function Explore() {
   const categories = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
 
   const filters = {
-    search: search.q,
+    search: search.q ?? "",
     categorySlug: search.category ?? null,
     sort: search.sort ?? "recent",
     availableOnly: search.available ?? false,

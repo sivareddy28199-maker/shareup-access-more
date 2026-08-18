@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Logo } from "@/components/brand";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { ensureProfile } from "@/lib/api";
 import { friendlyError } from "@/lib/format";
 import { useAuth } from "@/lib/auth";
@@ -110,23 +109,6 @@ function AuthPage() {
     }
   };
 
-  const google = async () => {
-    setLoading(true);
-    try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-      });
-      if (result.error) {
-        toast.error("Google sign-in failed. Try email instead.");
-        return;
-      }
-      if (result.redirected) return;
-      void navigate({ to: "/", replace: true });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="container-page flex min-h-[75vh] items-center justify-center py-10">
       <div className="w-full max-w-md rounded-3xl border bg-surface p-6 shadow-card animate-fade-in sm:p-8">
@@ -194,17 +176,6 @@ function AuthPage() {
           </Tabs>
         )}
 
-        <div className="my-5 flex items-center gap-3">
-          <span className="h-px flex-1 bg-border" />
-          <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            or
-          </span>
-          <span className="h-px flex-1 bg-border" />
-        </div>
-
-        <Button variant="outline" className="w-full" onClick={() => void google()} disabled={loading}>
-          Continue with Google
-        </Button>
       </div>
     </div>
   );
