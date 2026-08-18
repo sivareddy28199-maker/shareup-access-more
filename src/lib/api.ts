@@ -24,10 +24,16 @@ export type Listing = ListingRow & {
 const LISTING_SELECT =
   "*, categories(name, slug), listing_images(id, url, sort_order), owner:profiles!listings_owner_id_fkey(id, full_name, college, avatar_url, is_demo, verification_status)";
 
-function unwrap<T>({ data, error }: { data: T | null; error: { message: string } | null }): T {
+function unwrap<T>({
+  data,
+  error,
+}: {
+  data: T | null;
+  error: { message: string } | null;
+}): NonNullable<T> {
   if (error) throw new Error(error.message);
-  if (data === null) throw new Error("No data returned");
-  return data;
+  if (data === null || data === undefined) throw new Error("No data returned");
+  return data as NonNullable<T>;
 }
 
 export function primaryImage(listing: { listing_images?: { url: string; sort_order: number }[] }) {
