@@ -100,23 +100,29 @@ export async function fetchProfiles(ids: string[]): Promise<Record<string, Publi
   return Object.fromEntries((rows as PublicProfile[]).map((p) => [p.id, p]));
 }
 
-export async function fetchMyProfile() {
-  const { data, error } = await supabase.rpc("get_my_profile");
+export type MyProfileRow = Pick<
+  ProfileRow,
+  | "id"
+  | "full_name"
+  | "college"
+  | "department"
+  | "year"
+  | "phone"
+  | "avatar_url"
+  | "verification_status"
+  | "created_at"
+>;
+
+export async function fetchMyProfile(): Promise<MyProfileRow | null> {
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return null;
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, full_name, college, department, year, phone, avatar_url, verification_status, created_at")
+    .eq("id", auth.user.id)
+    .maybeSingle();
   if (error) throw new Error(error.message);
-  return (data?.[0] ?? null) as
-    | (Pick<
-        ProfileRow,
-        | "id"
-        | "full_name"
-        | "college"
-        | "department"
-        | "year"
-        | "phone"
-        | "avatar_url"
-        | "verification_status"
-        | "created_at"
-      >)
-    | null;
+  return (data as MyProfileRow | null) ?? null;
 }
 
 export async function fetchListingReviews(listingId: string) {
