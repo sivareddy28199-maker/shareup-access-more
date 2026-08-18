@@ -96,7 +96,7 @@ function RentalDetail() {
           <Info label="Owner" value={owner?.full_name ?? "Student"} />
           <Info label="Renter" value={renter?.full_name ?? "Student"} />
           <Info label="Rent" value={inr(rental.rent_amount)} />
-          <Info label="Deposit" value={inr(rental.deposit_amount)} />
+          <Info label="Deposit" value={inr(rental.deposit)} />
         </div>
 
         <div className="mt-6 flex flex-wrap gap-2">
