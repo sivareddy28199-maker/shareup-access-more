@@ -281,17 +281,17 @@ export async function createListing(
   ownerId: string,
   images: { url: string; path?: string }[],
 ) {
-  const listing = unwrap(
-    await supabase
-      .from("listings")
-      .insert({ ...input, owner_id: ownerId, is_demo: false })
-      .select("id")
-      .single(),
-  );
+  const created = await supabase
+    .from("listings")
+    .insert({ ...input, owner_id: ownerId, is_demo: false })
+    .select("id")
+    .single();
+  if (created.error) throw new Error(created.error.message);
+  const listingId = created.data.id;
   if (images.length) {
     const { error } = await supabase.from("listing_images").insert(
       images.map((image, index) => ({
-        listing_id: listing.id,
+        listing_id: listingId,
         url: image.url,
         storage_path: image.path ?? null,
         sort_order: index,
@@ -299,7 +299,7 @@ export async function createListing(
     );
     if (error) throw new Error(error.message);
   }
-  return listing.id;
+  return listingId;
 }
 
 export async function updateListing(
