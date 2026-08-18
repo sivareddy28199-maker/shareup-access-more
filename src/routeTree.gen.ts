@@ -10,33 +10,169 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedListItemRouteImport } from './routes/_authenticated/list-item'
+import { Route as AuthenticatedMyRentalsRouteImport } from './routes/_authenticated/my-rentals'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedVerifyRouteImport } from './routes/_authenticated/verify'
+import { Route as ItemIdRouteImport } from './routes/item.$id'
+import { Route as AuthenticatedCheckoutRequestIdRouteImport } from './routes/_authenticated/checkout.$requestId'
+import { Route as AuthenticatedRentalIdRouteImport } from './routes/_authenticated/rental.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedListItemRoute = AuthenticatedListItemRouteImport.update({
+  id: '/list-item',
+  path: '/list-item',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMyRentalsRoute = AuthenticatedMyRentalsRouteImport.update({
+  id: '/my-rentals',
+  path: '/my-rentals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedVerifyRoute = AuthenticatedVerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ItemIdRoute = ItemIdRouteImport.update({
+  id: '/item/$id',
+  path: '/item/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCheckoutRequestIdRoute =
+  AuthenticatedCheckoutRequestIdRouteImport.update({
+    id: '/checkout/$requestId',
+    path: '/checkout/$requestId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRentalIdRoute = AuthenticatedRentalIdRouteImport.update({
+  id: '/rental/$id',
+  path: '/rental/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/explore': typeof ExploreRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/list-item': typeof AuthenticatedListItemRoute
+  '/my-rentals': typeof AuthenticatedMyRentalsRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/verify': typeof AuthenticatedVerifyRoute
+  '/item/$id': typeof ItemIdRoute
+  '/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
+  '/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/explore': typeof ExploreRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/list-item': typeof AuthenticatedListItemRoute
+  '/my-rentals': typeof AuthenticatedMyRentalsRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/verify': typeof AuthenticatedVerifyRoute
+  '/item/$id': typeof ItemIdRoute
+  '/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
+  '/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/explore': typeof ExploreRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/list-item': typeof AuthenticatedListItemRoute
+  '/_authenticated/my-rentals': typeof AuthenticatedMyRentalsRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/verify': typeof AuthenticatedVerifyRoute
+  '/item/$id': typeof ItemIdRoute
+  '/_authenticated/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
+  '/_authenticated/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/dashboard'
+    | '/list-item'
+    | '/my-rentals'
+    | '/profile'
+    | '/verify'
+    | '/item/$id'
+    | '/checkout/$requestId'
+    | '/rental/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/dashboard'
+    | '/list-item'
+    | '/my-rentals'
+    | '/profile'
+    | '/verify'
+    | '/item/$id'
+    | '/checkout/$requestId'
+    | '/rental/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/explore'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/list-item'
+    | '/_authenticated/my-rentals'
+    | '/_authenticated/profile'
+    | '/_authenticated/verify'
+    | '/item/$id'
+    | '/_authenticated/checkout/$requestId'
+    | '/_authenticated/rental/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ExploreRoute: typeof ExploreRoute
+  ItemIdRoute: typeof ItemIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +184,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/list-item': {
+      id: '/_authenticated/list-item'
+      path: '/list-item'
+      fullPath: '/list-item'
+      preLoaderRoute: typeof AuthenticatedListItemRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-rentals': {
+      id: '/_authenticated/my-rentals'
+      path: '/my-rentals'
+      fullPath: '/my-rentals'
+      preLoaderRoute: typeof AuthenticatedMyRentalsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/verify': {
+      id: '/_authenticated/verify'
+      path: '/verify'
+      fullPath: '/verify'
+      preLoaderRoute: typeof AuthenticatedVerifyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/item/$id': {
+      id: '/item/$id'
+      path: '/item/$id'
+      fullPath: '/item/$id'
+      preLoaderRoute: typeof ItemIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/checkout/$requestId': {
+      id: '/_authenticated/checkout/$requestId'
+      path: '/checkout/$requestId'
+      fullPath: '/checkout/$requestId'
+      preLoaderRoute: typeof AuthenticatedCheckoutRequestIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/rental/$id': {
+      id: '/_authenticated/rental/$id'
+      path: '/rental/$id'
+      fullPath: '/rental/$id'
+      preLoaderRoute: typeof AuthenticatedRentalIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedListItemRoute: typeof AuthenticatedListItemRoute
+  AuthenticatedMyRentalsRoute: typeof AuthenticatedMyRentalsRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedVerifyRoute: typeof AuthenticatedVerifyRoute
+  AuthenticatedCheckoutRequestIdRoute: typeof AuthenticatedCheckoutRequestIdRoute
+  AuthenticatedRentalIdRoute: typeof AuthenticatedRentalIdRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedListItemRoute: AuthenticatedListItemRoute,
+  AuthenticatedMyRentalsRoute: AuthenticatedMyRentalsRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedVerifyRoute: AuthenticatedVerifyRoute,
+  AuthenticatedCheckoutRequestIdRoute: AuthenticatedCheckoutRequestIdRoute,
+  AuthenticatedRentalIdRoute: AuthenticatedRentalIdRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ExploreRoute: ExploreRoute,
+  ItemIdRoute: ItemIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
