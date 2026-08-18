@@ -13,10 +13,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedListItemRouteImport } from './routes/_authenticated/list-item'
 import { Route as AuthenticatedMyRentalsRouteImport } from './routes/_authenticated/my-rentals'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedVerifyRouteImport } from './routes/_authenticated/verify'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
+import { Route as AuthenticatedCheckoutRequestIdRouteImport } from './routes/_authenticated/checkout.$requestId'
+import { Route as AuthenticatedRentalIdRouteImport } from './routes/_authenticated/rental.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -37,6 +41,11 @@ const ExploreRoute = ExploreRouteImport.update({
   path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedListItemRoute = AuthenticatedListItemRouteImport.update({
   id: '/list-item',
   path: '/list-item',
@@ -45,6 +54,11 @@ const AuthenticatedListItemRoute = AuthenticatedListItemRouteImport.update({
 const AuthenticatedMyRentalsRoute = AuthenticatedMyRentalsRouteImport.update({
   id: '/my-rentals',
   path: '/my-rentals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedVerifyRoute = AuthenticatedVerifyRouteImport.update({
@@ -57,24 +71,43 @@ const ItemIdRoute = ItemIdRouteImport.update({
   path: '/item/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedCheckoutRequestIdRoute =
+  AuthenticatedCheckoutRequestIdRouteImport.update({
+    id: '/checkout/$requestId',
+    path: '/checkout/$requestId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedRentalIdRoute = AuthenticatedRentalIdRouteImport.update({
+  id: '/rental/$id',
+  path: '/rental/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/list-item': typeof AuthenticatedListItemRoute
   '/my-rentals': typeof AuthenticatedMyRentalsRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
+  '/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
+  '/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
   '/list-item': typeof AuthenticatedListItemRoute
   '/my-rentals': typeof AuthenticatedMyRentalsRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
+  '/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
+  '/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -82,10 +115,14 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/list-item': typeof AuthenticatedListItemRoute
   '/_authenticated/my-rentals': typeof AuthenticatedMyRentalsRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
+  '/_authenticated/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
+  '/_authenticated/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -93,29 +130,41 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/explore'
+    | '/dashboard'
     | '/list-item'
     | '/my-rentals'
+    | '/profile'
     | '/verify'
     | '/item/$id'
+    | '/checkout/$requestId'
+    | '/rental/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/explore'
+    | '/dashboard'
     | '/list-item'
     | '/my-rentals'
+    | '/profile'
     | '/verify'
     | '/item/$id'
+    | '/checkout/$requestId'
+    | '/rental/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/explore'
+    | '/_authenticated/dashboard'
     | '/_authenticated/list-item'
     | '/_authenticated/my-rentals'
+    | '/_authenticated/profile'
     | '/_authenticated/verify'
     | '/item/$id'
+    | '/_authenticated/checkout/$requestId'
+    | '/_authenticated/rental/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExploreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/list-item': {
       id: '/_authenticated/list-item'
       path: '/list-item'
@@ -168,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/my-rentals'
       fullPath: '/my-rentals'
       preLoaderRoute: typeof AuthenticatedMyRentalsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/verify': {
@@ -184,19 +247,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ItemIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/checkout/$requestId': {
+      id: '/_authenticated/checkout/$requestId'
+      path: '/checkout/$requestId'
+      fullPath: '/checkout/$requestId'
+      preLoaderRoute: typeof AuthenticatedCheckoutRequestIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/rental/$id': {
+      id: '/_authenticated/rental/$id'
+      path: '/rental/$id'
+      fullPath: '/rental/$id'
+      preLoaderRoute: typeof AuthenticatedRentalIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedListItemRoute: typeof AuthenticatedListItemRoute
   AuthenticatedMyRentalsRoute: typeof AuthenticatedMyRentalsRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedVerifyRoute: typeof AuthenticatedVerifyRoute
+  AuthenticatedCheckoutRequestIdRoute: typeof AuthenticatedCheckoutRequestIdRoute
+  AuthenticatedRentalIdRoute: typeof AuthenticatedRentalIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedListItemRoute: AuthenticatedListItemRoute,
   AuthenticatedMyRentalsRoute: AuthenticatedMyRentalsRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedVerifyRoute: AuthenticatedVerifyRoute,
+  AuthenticatedCheckoutRequestIdRoute: AuthenticatedCheckoutRequestIdRoute,
+  AuthenticatedRentalIdRoute: AuthenticatedRentalIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
