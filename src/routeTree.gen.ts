@@ -20,7 +20,6 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedVerifyRouteImport } from './routes/_authenticated/verify'
 import { Route as ItemIdRouteImport } from './routes/item.$id'
 import { Route as AuthenticatedCheckoutRequestIdRouteImport } from './routes/_authenticated/checkout.$requestId'
-import { Route as AuthenticatedEditListingIdRouteImport } from './routes/_authenticated/edit-listing.$id'
 import { Route as AuthenticatedRentalIdRouteImport } from './routes/_authenticated/rental.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -78,12 +77,6 @@ const AuthenticatedCheckoutRequestIdRoute =
     path: '/checkout/$requestId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedEditListingIdRoute =
-  AuthenticatedEditListingIdRouteImport.update({
-    id: '/edit-listing/$id',
-    path: '/edit-listing/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedRentalIdRoute = AuthenticatedRentalIdRouteImport.update({
   id: '/rental/$id',
   path: '/rental/$id',
@@ -101,7 +94,6 @@ export interface FileRoutesByFullPath {
   '/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
   '/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
-  '/edit-listing/$id': typeof AuthenticatedEditListingIdRoute
   '/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRoutesByTo {
@@ -115,7 +107,6 @@ export interface FileRoutesByTo {
   '/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
   '/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
-  '/edit-listing/$id': typeof AuthenticatedEditListingIdRoute
   '/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRoutesById {
@@ -131,7 +122,6 @@ export interface FileRoutesById {
   '/_authenticated/verify': typeof AuthenticatedVerifyRoute
   '/item/$id': typeof ItemIdRoute
   '/_authenticated/checkout/$requestId': typeof AuthenticatedCheckoutRequestIdRoute
-  '/_authenticated/edit-listing/$id': typeof AuthenticatedEditListingIdRoute
   '/_authenticated/rental/$id': typeof AuthenticatedRentalIdRoute
 }
 export interface FileRouteTypes {
@@ -147,7 +137,6 @@ export interface FileRouteTypes {
     | '/verify'
     | '/item/$id'
     | '/checkout/$requestId'
-    | '/edit-listing/$id'
     | '/rental/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -161,7 +150,6 @@ export interface FileRouteTypes {
     | '/verify'
     | '/item/$id'
     | '/checkout/$requestId'
-    | '/edit-listing/$id'
     | '/rental/$id'
   id:
     | '__root__'
@@ -176,7 +164,6 @@ export interface FileRouteTypes {
     | '/_authenticated/verify'
     | '/item/$id'
     | '/_authenticated/checkout/$requestId'
-    | '/_authenticated/edit-listing/$id'
     | '/_authenticated/rental/$id'
   fileRoutesById: FileRoutesById
 }
@@ -267,13 +254,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCheckoutRequestIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/edit-listing/$id': {
-      id: '/_authenticated/edit-listing/$id'
-      path: '/edit-listing/$id'
-      fullPath: '/edit-listing/$id'
-      preLoaderRoute: typeof AuthenticatedEditListingIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/rental/$id': {
       id: '/_authenticated/rental/$id'
       path: '/rental/$id'
@@ -291,7 +271,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedVerifyRoute: typeof AuthenticatedVerifyRoute
   AuthenticatedCheckoutRequestIdRoute: typeof AuthenticatedCheckoutRequestIdRoute
-  AuthenticatedEditListingIdRoute: typeof AuthenticatedEditListingIdRoute
   AuthenticatedRentalIdRoute: typeof AuthenticatedRentalIdRoute
 }
 
@@ -302,7 +281,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedVerifyRoute: AuthenticatedVerifyRoute,
   AuthenticatedCheckoutRequestIdRoute: AuthenticatedCheckoutRequestIdRoute,
-  AuthenticatedEditListingIdRoute: AuthenticatedEditListingIdRoute,
   AuthenticatedRentalIdRoute: AuthenticatedRentalIdRoute,
 }
 
