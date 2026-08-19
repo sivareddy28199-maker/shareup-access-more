@@ -190,6 +190,11 @@ function Dashboard() {
                       View
                     </Link>
                   </Button>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/edit-listing/$id" params={{ id: listing.id }}>
+                      Edit
+                    </Link>
+                  </Button>
                   <Button size="sm" variant="ghost" onClick={() => void remove(listing.id)}>
                     Delete
                   </Button>
