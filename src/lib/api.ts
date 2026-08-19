@@ -116,13 +116,12 @@ export type MyProfileRow = Pick<
 export async function fetchMyProfile(): Promise<MyProfileRow | null> {
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return null;
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("id, full_name, college, department, year, phone, avatar_url, verification_status, created_at")
-    .eq("id", auth.user.id)
-    .maybeSingle();
+  // Sensitive columns (phone, department, year) are not readable via the table
+  // API; this security-definer function returns only the caller's own row.
+  const { data, error } = await supabase.rpc("get_my_profile");
   if (error) throw new Error(error.message);
-  return (data as MyProfileRow | null) ?? null;
+  const rows = (data as MyProfileRow[] | null) ?? [];
+  return rows[0] ?? null;
 }
 
 export async function fetchListingReviews(listingId: string) {
