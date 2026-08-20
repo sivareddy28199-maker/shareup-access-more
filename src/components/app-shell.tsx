@@ -50,8 +50,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <header className="sticky top-0 z-40 border-b bg-surface/95 backdrop-blur">
-        <div className="container-page flex h-16 items-center gap-4">
+      <header className="sticky top-0 z-40 border-b border-white/60 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
+        <div className="container-page flex h-16 min-w-0 items-center gap-3 sm:gap-4">
           <BrandLockup />
 
           <form onSubmit={submitSearch} className="relative ml-2 hidden flex-1 md:block">
@@ -64,7 +64,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               onChange={(event) => setTerm(event.target.value)}
               placeholder="Search calculators, cameras, textbooks…"
               aria-label="Search rentals"
-              className="h-11 rounded-xl bg-surface-muted pl-9"
+              className="h-11 rounded-xl border-white/60 bg-white/70 pl-9"
             />
           </form>
 
@@ -144,7 +144,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               onChange={(event) => setTerm(event.target.value)}
               placeholder="Search rentals near you"
               aria-label="Search rentals"
-              className="h-11 rounded-xl bg-surface-muted pl-9"
+              className="h-11 rounded-xl border-white/60 bg-white/70 pl-9"
             />
           </div>
         </form>
