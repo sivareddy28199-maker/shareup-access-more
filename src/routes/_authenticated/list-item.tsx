@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createListing, fetchCategories, uploadListingImage } from "@/lib/api";
+import { createListing, ensureProfileForCurrentUser, fetchCategories, uploadListingImage } from "@/lib/api";
 import { friendlyError } from "@/lib/format";
 import { useAuth } from "@/lib/auth";
 
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_authenticated/list-item")({
 });
 
 function ListItem() {
-  const { user } = useAuth();
+  const { user, loading: authLoading, profile } = useAuth();
   const navigate = useNavigate();
   const categories = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
   const [categoryId, setCategoryId] = useState("");
@@ -43,7 +43,10 @@ function ListItem() {
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!user) return;
+    if (!user) {
+      toast.error("Your session isn't ready yet. Please sign in again.");
+      return;
+    }
     const form = new FormData(event.currentTarget);
     const title = String(form.get("title") ?? "").trim();
     const description = String(form.get("description") ?? "").trim();
@@ -65,9 +68,11 @@ function ListItem() {
 
     setSaving(true);
     try {
+      // Make sure the profile row backing listings.owner_id exists first.
+      const ownerId = await ensureProfileForCurrentUser();
       const images = [];
       for (const file of files.slice(0, 4)) {
-        images.push(await uploadListingImage(file, user.id));
+        images.push(await uploadListingImage(file, ownerId));
       }
       const id = await createListing(
         {
@@ -82,7 +87,7 @@ function ListItem() {
           max_days: Number(form.get("max_days")) || 14,
           is_available: true,
         },
-        user.id,
+        ownerId,
         images,
       );
       toast.success("Listing published");
@@ -166,9 +171,19 @@ function ListItem() {
           />
         </div>
 
-        <Button type="submit" className="w-full" size="lg" disabled={saving}>
-          {saving ? "Publishing…" : "Publish listing"}
+        <Button
+          type="submit"
+          className="w-full"
+          size="lg"
+          disabled={saving || authLoading || !user}
+        >
+          {authLoading ? "Preparing your account…" : saving ? "Publishing…" : "Publish listing"}
         </Button>
+        {!authLoading && !user && (
+          <p className="text-center text-xs text-destructive">
+            Your session expired — please sign in again to publish.
+          </p>
+        )}
       </form>
     </div>
   );
