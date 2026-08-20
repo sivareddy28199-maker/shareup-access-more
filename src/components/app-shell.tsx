@@ -49,7 +49,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen w-full flex-col overflow-x-hidden bg-background">
       <header className="sticky top-0 z-40 border-b border-white/60 bg-white/70 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
         <div className="container-page flex h-16 min-w-0 items-center gap-3 sm:gap-4">
           <BrandLockup />
@@ -152,21 +152,21 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="flex-1 pb-24 md:pb-10">{children}</main>
 
-      <footer className="hidden border-t bg-surface py-8 md:block">
+      <footer className="hidden border-t border-white/60 bg-white/60 py-8 backdrop-blur md:block">
         <div className="container-page flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <Logo size={26} />
             <span className="text-sm font-semibold">SHAREUP · Own less, access more</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Student rental marketplace · Starting at SJGC · Payments in this MVP are demo only
+            Student rental marketplace · Silver Jubilee Government College (SJGC), Kurnool · Payments in this MVP are demo only
           </p>
         </div>
       </footer>
 
       {/* Mobile bottom navigation + prominent list action */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-40 border-t bg-surface shadow-nav md:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-white/60 bg-white/80 pb-[env(safe-area-inset-bottom)] shadow-nav backdrop-blur-xl md:hidden"
         aria-label="Primary"
       >
         <div className="relative mx-auto grid max-w-lg grid-cols-5 items-end px-2 pb-1 pt-2">
