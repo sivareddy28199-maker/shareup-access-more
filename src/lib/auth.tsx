@@ -4,7 +4,7 @@ import { useRouter } from "@tanstack/react-router";
 import type { Session, User } from "@supabase/supabase-js";
 
 import { supabase } from "@/integrations/supabase/client";
-import { fetchMyProfile } from "@/lib/api";
+import { ensureProfile, fetchMyProfile } from "@/lib/api";
 
 type MyProfile = Awaited<ReturnType<typeof fetchMyProfile>>;
 
@@ -29,8 +29,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let active = true;
 
-    const loadProfile = async () => {
+    const loadProfile = async (sessionUser?: { id: string; email?: string | null; user_metadata?: Record<string, unknown> } | null) => {
       try {
+        if (sessionUser) {
+          const meta = (sessionUser.user_metadata ?? {}) as { full_name?: string; college?: string };
+          // Keeps profiles in sync with auth.uid() (idempotent) so owner-side
+          // inserts never hit the listings_owner_id_fkey constraint.
+          await ensureProfile(sessionUser.id, {
+            full_name: meta.full_name ?? sessionUser.email?.split("@")[0] ?? "",
+            college: meta.college,
+          });
+        }
         const next = await fetchMyProfile();
         if (active) setProfile(next);
       } catch {
@@ -42,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!active) return;
       setSession(data.session);
       setLoading(false);
-      if (data.session) void loadProfile();
+      if (data.session) void loadProfile(data.session.user);
     });
 
     const { data: subscription } = supabase.auth.onAuthStateChange((event, nextSession) => {
@@ -55,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
       queryClient.invalidateQueries();
-      void loadProfile();
+      void loadProfile(nextSession?.user ?? null);
     });
 
     return () => {
@@ -72,6 +81,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       refreshProfile: async () => {
         try {
+          if (session?.user) {
+            await ensureProfile(session.user.id, {
+              full_name:
+                (session.user.user_metadata as { full_name?: string } | undefined)?.full_name ??
+                session.user.email?.split("@")[0] ??
+                "",
+            });
+          }
           setProfile(await fetchMyProfile());
         } catch {
           setProfile(null);
