@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // inserts never hit the listings_owner_id_fkey constraint.
           await ensureProfile(sessionUser.id, {
             full_name: meta.full_name ?? sessionUser.email?.split("@")[0] ?? "",
-            college: meta.college,
+            ...(meta.college ? { college: meta.college } : {}),
           });
         }
         const next = await fetchMyProfile();
