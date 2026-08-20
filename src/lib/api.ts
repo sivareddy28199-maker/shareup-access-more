@@ -283,9 +283,12 @@ export type ListingInput = {
 
 export async function createListing(
   input: ListingInput,
-  ownerId: string,
+  _ownerId: string,
   images: { url: string; path?: string }[],
 ) {
+  // owner_id must always be the authenticated auth.uid(), and the referenced
+  // profiles row must exist first (FK: listings_owner_id_fkey).
+  const ownerId = await ensureProfileForCurrentUser();
   const created = await supabase
     .from("listings")
     .insert({ ...input, owner_id: ownerId, is_demo: false })
@@ -473,20 +476,71 @@ export async function updateProfile(
   if (error) throw new Error(error.message);
 }
 
+export const DEFAULT_COLLEGE = "Silver Jubilee Government College (SJGC), Kurnool";
+
+/**
+ * Idempotent profile synchronisation. `listings.owner_id` has a FK to
+ * `profiles.id`, so a profile row MUST exist before any owner-side insert.
+ * Existing rows are never blown away: we only fill in a missing row, or
+ * backfill an empty name/college.
+ */
 export async function ensureProfile(
   userId: string,
-  input: { full_name: string; college?: string; department?: string | null; year?: number | null; phone?: string | null },
+  input: {
+    full_name?: string;
+    college?: string;
+    department?: string | null;
+    year?: number | null;
+    phone?: string | null;
+  } = {},
 ) {
-  const { error } = await supabase.from("profiles").upsert(
-    {
-      id: userId,
-      full_name: input.full_name,
-      ...(input.college ? { college: input.college } : {}),
-      department: input.department ?? null,
-      year: input.year ?? null,
-      phone: input.phone ?? null,
-    },
-    { onConflict: "id" },
-  );
-  if (error) throw new Error(error.message);
+  const existing = await supabase
+    .from("profiles")
+    .select("id, full_name, college")
+    .eq("id", userId)
+    .maybeSingle();
+  if (existing.error) throw new Error(existing.error.message);
+
+  if (!existing.data) {
+    const { error } = await supabase.from("profiles").upsert(
+      {
+        id: userId,
+        full_name: (input.full_name ?? "").trim() || "SHAREUP member",
+        college: (input.college ?? "").trim() || DEFAULT_COLLEGE,
+        ...(input.department !== undefined ? { department: input.department } : {}),
+        ...(input.year !== undefined ? { year: input.year } : {}),
+        ...(input.phone !== undefined ? { phone: input.phone } : {}),
+      },
+      { onConflict: "id" },
+    );
+    if (error) throw new Error(error.message);
+    return;
+  }
+
+  const patch: { full_name?: string; college?: string } = {};
+  if (!existing.data.full_name?.trim() && input.full_name?.trim()) {
+    patch.full_name = input.full_name.trim();
+  }
+  if (!existing.data.college?.trim() && input.college?.trim()) {
+    patch.college = input.college.trim();
+  }
+  if (Object.keys(patch).length) {
+    const { error } = await supabase.from("profiles").update(patch).eq("id", userId);
+    if (error) throw new Error(error.message);
+  }
+}
+
+/**
+ * Guarantees a live session and a matching profile row, and returns the
+ * authenticated user id — the only value that may be used as `owner_id`.
+ */
+export async function ensureProfileForCurrentUser(): Promise<string> {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) throw new Error("Your session has expired. Please sign in again.");
+  const meta = (data.user.user_metadata ?? {}) as { full_name?: string; college?: string };
+  await ensureProfile(data.user.id, {
+    full_name: meta.full_name ?? data.user.email?.split("@")[0] ?? "",
+    college: meta.college ?? DEFAULT_COLLEGE,
+  });
+  return data.user.id;
 }
