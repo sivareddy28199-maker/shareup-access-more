@@ -34,7 +34,7 @@ export const Route = createFileRoute("/_authenticated/list-item")({
 });
 
 function ListItem() {
-  const { user, loading: authLoading, profile } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const categories = useQuery({ queryKey: ["categories"], queryFn: fetchCategories });
   const [categoryId, setCategoryId] = useState("");

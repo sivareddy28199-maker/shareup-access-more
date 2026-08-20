@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowRight, Search, ShieldCheck, Sparkles, Wallet } from "lucide-react";
+import { ArrowRight, Search, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,13 +39,13 @@ function Home() {
 
   return (
     <div className="pb-8">
-      <section className="border-b bg-primary-soft/60">
-        <div className="container-page py-10 sm:py-14">
+      <section className="relative overflow-hidden border-b glass-hero">
+        <div className="container-page py-8 sm:py-14">
           <div className="max-w-2xl animate-fade-in">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-primary shadow-card">
-              <Sparkles className="size-3.5" aria-hidden /> Starting at SJGC
+              <Sparkles className="size-3.5" aria-hidden /> Starting at Silver Jubilee Government College (SJGC), Kurnool
             </span>
-            <h1 className="mt-4 text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+            <h1 className="mt-4 text-[1.7rem] font-extrabold leading-tight tracking-tight sm:text-5xl">
               Why buy what you only need temporarily?
             </h1>
             <p className="mt-3 text-base font-semibold uppercase tracking-[0.2em] text-primary">
@@ -73,7 +73,7 @@ function Home() {
                   onChange={(event) => setTerm(event.target.value)}
                   placeholder="What do you need? e.g. scientific calculator"
                   aria-label="Search rentals"
-                  className="h-12 rounded-xl bg-surface pl-9"
+                  className="h-12 rounded-xl border-white/60 bg-white/80 pl-9 backdrop-blur"
                 />
               </div>
               <Button type="submit" size="lg" className="h-12 press">
@@ -82,21 +82,11 @@ function Home() {
             </form>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              <Button asChild variant="outline" size="lg" className="h-12 bg-surface">
+              <Button asChild variant="outline" size="lg" className="h-12 border-white/60 bg-white/70 backdrop-blur">
                 <Link to="/list-item">List an Item</Link>
               </Button>
             </div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              <Perk icon={<Wallet className="size-4" aria-hidden />} title="Pay per day">
-                Owner-set prices with a refundable deposit.
-              </Perk>
-              <Perk icon={<ShieldCheck className="size-4" aria-hidden />} title="Verified students">
-                Every member uploads a student ID card.
-              </Perk>
-              <Perk icon={<Sparkles className="size-4" aria-hidden />} title="Campus pickup">
-                Collect and return right on campus.
-              </Perk>
             </div>
           </div>
         </div>
@@ -110,7 +100,7 @@ function Home() {
               key={category.id}
               to="/explore"
               search={{ category: category.slug }}
-              className="press rounded-2xl border bg-surface p-4 text-sm font-semibold shadow-card transition-all hover:-translate-y-0.5 hover:shadow-lift"
+              className="glass press rounded-2xl p-4 text-sm font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lift"
             >
               {category.name}
             </Link>
@@ -147,26 +137,6 @@ function Home() {
           />
         )}
       </section>
-    </div>
-  );
-}
-
-function Perk({
-  icon,
-  title,
-  children,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="rounded-2xl bg-surface p-4 shadow-card">
-      <div className="flex items-center gap-2 text-primary">
-        {icon}
-        <p className="text-sm font-bold">{title}</p>
-      </div>
-      <p className="mt-1 text-xs text-muted-foreground">{children}</p>
     </div>
   );
 }
