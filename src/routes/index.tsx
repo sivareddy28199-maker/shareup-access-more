@@ -43,7 +43,7 @@ function Home() {
         <div className="container-page py-8 sm:py-14">
           <div className="max-w-2xl animate-fade-in">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-primary shadow-card">
-              <Sparkles className="size-3.5" aria-hidden /> Starting at Silver Jubilee Government College (SJGC), Kurnool
+              <Sparkles className="size-3.5" aria-hidden /> Starting at SJGC, Kurnool
             </span>
             <h1 className="mt-4 text-[1.7rem] font-extrabold leading-tight tracking-tight sm:text-5xl">
               Why buy what you only need temporarily?
@@ -54,6 +54,7 @@ function Home() {
             <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
               SHAREUP is a student rental marketplace. Rent calculators, textbooks, cameras, sports
               gear and formal wear by the day — or earn from what's sitting idle in your room.
+              Now live at Silver Jubilee Government College (SJGC), Kurnool.
             </p>
 
             <form
@@ -87,7 +88,6 @@ function Home() {
               </Button>
             </div>
 
-            </div>
           </div>
         </div>
       </section>
