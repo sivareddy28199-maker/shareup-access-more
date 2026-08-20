@@ -20,7 +20,7 @@ export const Route = createFileRoute("/auth")({
       {
         name: "description",
         content:
-          "Create your SHAREUP account with your college email to rent and list items on campus.",
+          "Create your SHAREUP account to rent and list items on campus. Verify with your student ID card.",
       },
       { property: "og:title", content: "Sign in or join — SHAREUP student rentals" },
       {
@@ -136,7 +136,7 @@ function AuthPage() {
 
             <TabsContent value="signin">
               <form className="space-y-4 pt-2" onSubmit={signIn}>
-                <Field label="College email" name="email" type="email" autoComplete="email" />
+                <Field label="Email" name="email" type="email" autoComplete="email" />
                 <Field
                   label="Password"
                   name="password"
@@ -155,9 +155,9 @@ function AuthPage() {
                 <Field
                   label="College"
                   name="college"
-                  defaultValue="St. Joseph's Girls College (SJGC)"
+                  defaultValue="Silver Jubilee Government College (SJGC), Kurnool"
                 />
-                <Field label="College email" name="email" type="email" autoComplete="email" />
+                <Field label="Email" name="email" type="email" autoComplete="email" />
                 <Field
                   label="Password"
                   name="password"
