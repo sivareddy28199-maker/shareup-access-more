@@ -111,8 +111,8 @@ function ItemDetail() {
   return (
     <div className="container-page py-6">
       <RentalSteps />
-      <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="order-2 lg:order-1">
+      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-x-8">
+        <div className="order-1 lg:col-start-1 lg:row-start-1">
           <div className="overflow-hidden rounded-2xl border bg-surface-muted">
             <img
               src={primaryImage(item) ?? ""}
@@ -132,8 +132,10 @@ function ItemDetail() {
               ))}
             </div>
           )}
+        </div>
 
-          <div className="mt-6">
+        <div className="order-3 lg:col-start-1 lg:row-start-2">
+          <div>
             <h2 className="text-lg font-bold">About this item</h2>
             <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">
               {item.description}
@@ -145,6 +147,7 @@ function ItemDetail() {
               <Detail label="Maximum rental" value={`${item.max_days} day(s)`} />
             </dl>
           </div>
+
 
           <div className="mt-8">
             <h2 className="text-lg font-bold">Reviews</h2>
