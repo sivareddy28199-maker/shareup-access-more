@@ -112,7 +112,7 @@ function ItemDetail() {
     <div className="container-page py-6">
       <RentalSteps />
       <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div>
+        <div className="order-2 lg:order-1">
           <div className="overflow-hidden rounded-2xl border bg-surface-muted">
             <img
               src={primaryImage(item) ?? ""}
