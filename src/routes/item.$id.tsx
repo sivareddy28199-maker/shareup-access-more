@@ -110,6 +110,7 @@ function ItemDetail() {
 
   return (
     <div className="container-page py-6">
+      <RentalSteps />
       <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
         <div>
           <div className="overflow-hidden rounded-2xl border bg-surface-muted">
