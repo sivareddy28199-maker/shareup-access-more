@@ -271,10 +271,19 @@ function ItemDetail() {
                     : "Currently unavailable"}
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  Owner approval is required. Payment in this MVP is demo only.
+                  Owner approval is required. Demo payment — no real charge.
                 </p>
               </div>
             )}
+          </div>
+
+          <div className="glass mt-4 flex items-center justify-between gap-3 rounded-2xl p-4">
+            <p className="min-w-0 text-sm font-semibold">
+              Have an unused item? List it and earn rental income.
+            </p>
+            <Button asChild size="sm" variant="outline" className="shrink-0">
+              <Link to="/list-item">List</Link>
+            </Button>
           </div>
         </aside>
       </div>
