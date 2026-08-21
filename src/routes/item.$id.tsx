@@ -180,7 +180,7 @@ function ItemDetail() {
           </div>
         </div>
 
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+        <aside className="order-1 lg:order-2 lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-2xl border bg-surface p-5 shadow-card">
             <div className="flex items-start justify-between gap-3">
               <div>
