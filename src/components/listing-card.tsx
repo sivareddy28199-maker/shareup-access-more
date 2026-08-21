@@ -35,12 +35,23 @@ export function ListingCard({ listing }: { listing: Listing }) {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1 p-3">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-          {listing.categories?.name ?? "Rental"}
-        </p>
+        <div className="flex min-w-0 items-center justify-between gap-2">
+          <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+            {listing.categories?.name ?? "Rental"}
+          </p>
+          <span
+            className={
+              listing.is_available
+                ? "shrink-0 rounded-full bg-success-soft px-1.5 py-0.5 text-[10px] font-semibold text-success"
+                : "shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground"
+            }
+          >
+            {listing.is_available ? "Available" : "Booked"}
+          </span>
+        </div>
         <h3 className="line-clamp-2 text-sm font-semibold leading-snug">{listing.title}</h3>
         <p className="flex items-center gap-1 text-xs text-muted-foreground">
-          <MapPin className="size-3" aria-hidden />
+          <MapPin className="size-3 shrink-0" aria-hidden />
           <span className="line-clamp-1">{listing.location}</span>
         </p>
         <div className="mt-auto pt-2">
@@ -51,6 +62,9 @@ export function ListingCard({ listing }: { listing: Listing }) {
           <p className="text-[11px] text-muted-foreground">
             Refundable deposit {inr(listing.deposit)}
           </p>
+          <span className="press mt-2 flex h-9 w-full items-center justify-center rounded-xl bg-primary text-xs font-semibold text-primary-foreground">
+            View &amp; Rent
+          </span>
         </div>
       </div>
     </Link>

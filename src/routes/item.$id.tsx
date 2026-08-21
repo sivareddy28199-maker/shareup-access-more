@@ -110,8 +110,9 @@ function ItemDetail() {
 
   return (
     <div className="container-page py-6">
-      <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-        <div>
+      <RentalSteps />
+      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-x-8">
+        <div className="order-1 lg:col-start-1 lg:row-start-1">
           <div className="overflow-hidden rounded-2xl border bg-surface-muted">
             <img
               src={primaryImage(item) ?? ""}
@@ -131,8 +132,10 @@ function ItemDetail() {
               ))}
             </div>
           )}
+        </div>
 
-          <div className="mt-6">
+        <div className="order-3 lg:col-start-1 lg:row-start-2">
+          <div>
             <h2 className="text-lg font-bold">About this item</h2>
             <p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">
               {item.description}
@@ -144,6 +147,7 @@ function ItemDetail() {
               <Detail label="Maximum rental" value={`${item.max_days} day(s)`} />
             </dl>
           </div>
+
 
           <div className="mt-8">
             <h2 className="text-lg font-bold">Reviews</h2>
@@ -179,7 +183,7 @@ function ItemDetail() {
           </div>
         </div>
 
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+        <aside className="order-1 lg:order-2 lg:sticky lg:top-24 lg:self-start">
           <div className="rounded-2xl border bg-surface p-5 shadow-card">
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -270,14 +274,44 @@ function ItemDetail() {
                     : "Currently unavailable"}
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
-                  Owner approval is required. Payment in this MVP is demo only.
+                  Owner approval is required. Demo payment — no real charge.
                 </p>
               </div>
             )}
           </div>
+
+          <div className="glass mt-4 flex items-center justify-between gap-3 rounded-2xl p-4">
+            <p className="min-w-0 text-sm font-semibold">
+              Have an unused item? List it and earn rental income.
+            </p>
+            <Button asChild size="sm" variant="outline" className="shrink-0">
+              <Link to="/list-item">List</Link>
+            </Button>
+          </div>
         </aside>
       </div>
     </div>
+  );
+}
+
+const FLOW = ["Browse", "View item", "Request", "Owner approval", "Demo payment", "Collect", "Return", "Review"];
+
+function RentalSteps() {
+  return (
+    <ol className="mb-5 flex gap-1.5 overflow-x-auto pb-1 text-[11px] font-semibold [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {FLOW.map((step, index) => (
+        <li
+          key={step}
+          className={
+            index < 3
+              ? "shrink-0 rounded-full bg-primary-soft px-2.5 py-1 text-primary"
+              : "shrink-0 rounded-full bg-surface-muted px-2.5 py-1 text-muted-foreground"
+          }
+        >
+          {index + 1}. {step}
+        </li>
+      ))}
+    </ol>
   );
 }
 
