@@ -1,7 +1,27 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { ArrowRight, Search, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Backpack,
+  BookOpen,
+  Calculator,
+  Camera,
+  CircleDollarSign,
+  Cpu,
+  GraduationCap,
+  Handshake,
+  Hammer,
+  PartyPopper,
+  PlugZap,
+  Search,
+  Shirt,
+  Sparkles,
+  Trophy,
+  Undo2,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +48,41 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+const CATEGORY_ICON: Record<string, LucideIcon> = {
+  books: BookOpen,
+  calculators: Calculator,
+  electronics: Cpu,
+  sports: Trophy,
+  formal: Shirt,
+  bags: Backpack,
+  cameras: Camera,
+  chargers: PlugZap,
+  tools: Hammer,
+  events: PartyPopper,
+};
+
+const CATEGORY_PRIORITY = [
+  "books",
+  "calculators",
+  "electronics",
+  "sports",
+  "formal",
+  "bags",
+];
+
+const STEPS: { label: string; icon: LucideIcon }[] = [
+  { label: "Search", icon: Search },
+  { label: "Request", icon: Handshake },
+  { label: "Rent", icon: Wallet },
+  { label: "Return", icon: Undo2 },
+];
+
+const VALUES: { title: string; description: string; icon: LucideIcon }[] = [
+  { title: "Save Money", description: "Pay per day instead of buying", icon: CircleDollarSign },
+  { title: "Earn from Unused Items", description: "Idle gear becomes income", icon: Sparkles },
+  { title: "Student-Focused Marketplace", description: "Built for campus life", icon: GraduationCap },
+];
+
 function Home() {
   const navigate = useNavigate();
   const [term, setTerm] = useState("");
@@ -37,24 +92,33 @@ function Home() {
     queryFn: () => fetchListings({ limit: 8, availableOnly: true }),
   });
 
+  const orderedCategories = [...(categories.data ?? [])].sort((a, b) => {
+    const ai = CATEGORY_PRIORITY.indexOf(a.slug);
+    const bi = CATEGORY_PRIORITY.indexOf(b.slug);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
   return (
     <div className="pb-8">
       <section className="relative overflow-hidden border-b glass-hero">
         <div className="container-page py-8 sm:py-14">
           <div className="max-w-2xl animate-fade-in">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-primary shadow-card">
-              <Sparkles className="size-3.5" aria-hidden /> Starting at SJGC, Kurnool
+            <span className="inline-flex max-w-full items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-primary shadow-card">
+              <Sparkles className="size-3.5 shrink-0" aria-hidden />
+              <span className="truncate">Starting at SJGC, Kurnool</span>
             </span>
-            <h1 className="mt-4 text-[1.7rem] font-extrabold leading-tight tracking-tight sm:text-5xl">
+            <h1 className="mt-4 text-[1.6rem] font-extrabold leading-tight tracking-tight sm:text-5xl">
               Why buy what you only need temporarily?
             </h1>
-            <p className="mt-3 text-base font-semibold uppercase tracking-[0.2em] text-primary">
+            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary sm:text-base">
               Own less, access more
             </p>
             <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
-              SHAREUP is a student rental marketplace. Rent calculators, textbooks, cameras, sports
-              gear and formal wear by the day — or earn from what's sitting idle in your room.
-              Now live at Silver Jubilee Government College (SJGC), Kurnool.
+              Rent from fellow students. Earn from items you already own.
+            </p>
+            <p className="mt-2 max-w-xl text-xs text-muted-foreground sm:text-sm">
+              Calculators, textbooks, cameras, sports gear and formal wear — by the day, at Silver
+              Jubilee Government College (SJGC), Kurnool.
             </p>
 
             <form
@@ -83,28 +147,78 @@ function Home() {
             </form>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              <Button asChild variant="outline" size="lg" className="h-12 border-white/60 bg-white/70 backdrop-blur">
-                <Link to="/list-item">List an Item</Link>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="h-12 border-primary/25 bg-white/75 text-primary backdrop-blur press"
+              >
+                <Link to="/list-item">List an Item · earn from it</Link>
               </Button>
             </div>
-
           </div>
+        </div>
+      </section>
+
+      {/* How SHAREUP works */}
+      <section className="container-page pt-6">
+        <div className="glass grid grid-cols-2 gap-2 rounded-2xl p-3 sm:grid-cols-4 sm:gap-3 sm:p-4">
+          {STEPS.map((step, index) => (
+            <div key={step.label} className="flex min-w-0 items-center gap-2.5">
+              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-primary-soft text-primary">
+                <step.icon className="size-4" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  Step {index + 1}
+                </span>
+                <span className="block truncate text-sm font-bold">{step.label}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Why SHAREUP */}
+      <section className="container-page pt-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {VALUES.map((value) => (
+            <div key={value.title} className="glass flex min-w-0 items-center gap-3 rounded-2xl p-3.5">
+              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-success-soft text-success">
+                <value.icon className="size-5" aria-hidden />
+              </span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-bold">{value.title}</span>
+                <span className="block truncate text-xs text-muted-foreground">
+                  {value.description}
+                </span>
+              </span>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="container-page py-8">
         <SectionHeading title="Browse by category" subtitle="Everything students actually need" />
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {(categories.data ?? []).map((category) => (
-            <Link
-              key={category.id}
-              to="/explore"
-              search={{ category: category.slug }}
-              className="glass press rounded-2xl p-4 text-sm font-semibold transition-all hover:-translate-y-0.5 hover:shadow-lift"
-            >
-              {category.name}
-            </Link>
-          ))}
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+          {orderedCategories.map((category) => {
+            const Icon = CATEGORY_ICON[category.slug] ?? Sparkles;
+            return (
+              <Link
+                key={category.id}
+                to="/explore"
+                search={{ category: category.slug }}
+                className="glass press flex flex-col items-center gap-2 rounded-2xl p-3 text-center transition-all hover:-translate-y-0.5 hover:shadow-lift"
+              >
+                <span className="grid size-12 shrink-0 place-items-center rounded-full bg-primary-soft text-primary sm:size-14">
+                  <Icon className="size-5 sm:size-6" aria-hidden />
+                </span>
+                <span className="text-[11px] font-semibold leading-snug sm:text-sm">
+                  {category.name}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -136,6 +250,20 @@ function Home() {
             actionTo="/list-item"
           />
         )}
+      </section>
+
+      <section className="container-page pb-4 pt-6">
+        <div className="glass flex flex-col items-start gap-3 rounded-2xl p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h2 className="text-base font-bold sm:text-lg">Have an unused item?</h2>
+            <p className="text-sm text-muted-foreground">
+              List it on SHAREUP and earn rental income from your campus.
+            </p>
+          </div>
+          <Button asChild size="lg" className="press w-full sm:w-auto">
+            <Link to="/list-item">List an Item</Link>
+          </Button>
+        </div>
       </section>
     </div>
   );
