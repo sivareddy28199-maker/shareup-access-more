@@ -282,6 +282,27 @@ function ItemDetail() {
   );
 }
 
+const FLOW = ["Browse", "View item", "Request", "Owner approval", "Demo payment", "Collect", "Return", "Review"];
+
+function RentalSteps() {
+  return (
+    <ol className="mb-5 flex gap-1.5 overflow-x-auto pb-1 text-[11px] font-semibold [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {FLOW.map((step, index) => (
+        <li
+          key={step}
+          className={
+            index < 3
+              ? "shrink-0 rounded-full bg-primary-soft px-2.5 py-1 text-primary"
+              : "shrink-0 rounded-full bg-surface-muted px-2.5 py-1 text-muted-foreground"
+          }
+        >
+          {index + 1}. {step}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border bg-surface p-3">
