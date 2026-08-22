@@ -152,11 +152,7 @@ function AuthPage() {
             <TabsContent value="signup">
               <form className="space-y-4 pt-2" onSubmit={signUp}>
                 <Field label="Full name" name="full_name" autoComplete="name" />
-                <Field
-                  label="College"
-                  name="college"
-                  defaultValue="Silver Jubilee Government College (SJGC), Kurnool"
-                />
+                <Field label="College" name="college" placeholder="Your college name" required={false} />
                 <Field label="Email" name="email" type="email" autoComplete="email" />
                 <Field
                   label="Password"

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ArrowRight,
   Backpack,
@@ -61,14 +61,11 @@ const CATEGORY_ICON: Record<string, LucideIcon> = {
   events: PartyPopper,
 };
 
-const CATEGORY_PRIORITY = [
-  "books",
-  "calculators",
-  "electronics",
-  "sports",
-  "formal",
-  "bags",
-];
+const CATEGORY_PRIORITY = ["books", "calculators", "electronics", "sports", "formal"];
+
+/** Hidden on the home screen only — still filterable on Explore. */
+const HOME_HIDDEN_CATEGORIES = new Set(["bags"]);
+const HOME_CATEGORY_LIMIT = 9;
 
 const STEPS: { label: string; icon: LucideIcon }[] = [
   { label: "Search", icon: Search },
@@ -92,11 +89,18 @@ function Home() {
     queryFn: () => fetchListings({ limit: 8, availableOnly: true }),
   });
 
-  const orderedCategories = [...(categories.data ?? [])].sort((a, b) => {
-    const ai = CATEGORY_PRIORITY.indexOf(a.slug);
-    const bi = CATEGORY_PRIORITY.indexOf(b.slug);
-    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-  });
+  const orderedCategories = useMemo(
+    () =>
+      (categories.data ?? [])
+        .filter((category) => !HOME_HIDDEN_CATEGORIES.has(category.slug))
+        .sort((a, b) => {
+          const ai = CATEGORY_PRIORITY.indexOf(a.slug);
+          const bi = CATEGORY_PRIORITY.indexOf(b.slug);
+          return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+        })
+        .slice(0, HOME_CATEGORY_LIMIT),
+    [categories.data],
+  );
 
   return (
     <div className="pb-8">
@@ -105,20 +109,19 @@ function Home() {
           <div className="max-w-2xl animate-fade-in">
             <span className="inline-flex max-w-full items-center gap-1.5 rounded-full bg-surface px-3 py-1 text-xs font-semibold text-primary shadow-card">
               <Sparkles className="size-3.5 shrink-0" aria-hidden />
-              <span className="truncate">Starting at SJGC, Kurnool</span>
+              <span className="truncate">Student-to-student rentals</span>
             </span>
-            <h1 className="mt-4 text-[1.6rem] font-extrabold leading-tight tracking-tight sm:text-5xl">
-              Why buy what you only need temporarily?
+            <h1 className="mt-4 whitespace-nowrap font-display text-[1.15rem] font-extrabold leading-tight tracking-tight sm:whitespace-normal sm:text-4xl">
+              Rent it. Use it. Return it.
             </h1>
-            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary sm:text-base">
+            <p className="mt-3 font-display text-sm font-bold uppercase tracking-[0.2em] text-primary sm:text-lg">
               Own less, access more
             </p>
             <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
               Rent from fellow students. Earn from items you already own.
             </p>
             <p className="mt-2 max-w-xl text-xs text-muted-foreground sm:text-sm">
-              Calculators, textbooks, cameras, sports gear and formal wear — by the day, at Silver
-              Jubilee Government College (SJGC), Kurnool.
+              Calculators, textbooks, cameras, sports gear and formal wear — by the day.
             </p>
 
             <form

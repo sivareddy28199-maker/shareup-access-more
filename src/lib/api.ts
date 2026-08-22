@@ -476,7 +476,7 @@ export async function updateProfile(
   if (error) throw new Error(error.message);
 }
 
-export const DEFAULT_COLLEGE = "Silver Jubilee Government College (SJGC), Kurnool";
+export const DEFAULT_COLLEGE = "Student";
 
 /**
  * Idempotent profile synchronisation. `listings.owner_id` has a FK to
