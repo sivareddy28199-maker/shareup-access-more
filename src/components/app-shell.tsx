@@ -97,8 +97,13 @@ export function AppShell({ children }: { children: ReactNode }) {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="rounded-full" aria-label="Account menu">
-                    <UserIcon className="size-4" aria-hidden />
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-11 rounded-full border-white/70 bg-white/70 backdrop-blur"
+                    aria-label="Account menu"
+                  >
+                    <UserIcon className="size-5" aria-hidden />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -159,7 +164,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="text-sm font-semibold">SHAREUP · Own less, access more</span>
           </div>
           <p className="text-xs text-muted-foreground">
-            Student rental marketplace · Silver Jubilee Government College (SJGC), Kurnool · Payments in this MVP are demo only
+            Student-to-student rental marketplace · Payments in this MVP are demo only
           </p>
         </div>
       </footer>

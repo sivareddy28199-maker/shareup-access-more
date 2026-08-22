@@ -156,7 +156,7 @@ function ListItem() {
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="location">Pickup location</Label>
-            <Input id="location" name="location" defaultValue="SJGC Campus" />
+            <Input id="location" name="location" placeholder="e.g. Main campus gate" />
           </div>
         </div>
 

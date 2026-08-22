@@ -101,7 +101,7 @@ function Verify() {
               value={idNumber}
               maxLength={40}
               onChange={(event) => setIdNumber(event.target.value)}
-              placeholder="e.g. SJGC21BCOM123"
+              placeholder="e.g. 21BCOM123"
             />
           </div>
           <div className="space-y-1.5">
