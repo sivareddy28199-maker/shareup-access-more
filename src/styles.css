@@ -160,6 +160,10 @@
 
   body {
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(60% 40% at 8% 0%, oklch(0.68 0.1 205 / 0.12), transparent 62%),
+      radial-gradient(55% 40% at 96% 4%, oklch(0.72 0.13 158 / 0.12), transparent 60%);
+    background-repeat: no-repeat;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
