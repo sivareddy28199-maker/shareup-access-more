@@ -12,7 +12,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
     <Link
       to="/item/$id"
       params={{ id: listing.id }}
-      className="group flex flex-col overflow-hidden rounded-2xl border bg-surface shadow-card transition-all hover:-translate-y-0.5 hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      className="group glass flex flex-col overflow-hidden rounded-2xl transition-shadow hover:shadow-lift focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-surface-muted">
         {image ? (
@@ -20,7 +20,11 @@ export function ListingCard({ listing }: { listing: Listing }) {
             src={image}
             alt={listing.title}
             loading="lazy"
-            className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+            decoding="async"
+            width={480}
+            height={360}
+            sizes="(max-width: 640px) 50vw, 25vw"
+            className="size-full object-cover"
           />
         ) : (
           <div className="flex size-full items-center justify-center text-xs text-muted-foreground">
